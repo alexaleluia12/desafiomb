@@ -1,0 +1,3 @@
+DATABASE_NAME = 'database.db'
+ETHEREUM = 'BRLETH'
+BITCOIN = 'BRLBTC'
