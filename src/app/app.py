@@ -35,7 +35,8 @@ def get_avg(pair):
 
     cursor.execute(
         f'''SELECT timestamp, mms_{data["range_"]} as mms
-            FROM coins where pair = ? and timestamp >= {data["from_"]} and timestamp <= {data["to"]}''',
+            FROM coins where pair = ? and timestamp >= {data["from_"]} and timestamp <= {data["to"]}
+            ORDER BY timestamp ASC''',
         (data['pair'],)
     )
     result = cursor.fetchall()
