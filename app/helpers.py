@@ -2,8 +2,10 @@
 
 def movin_average(lst, period):
     max_ = len(lst)
-    for i in range(max_-1, period - 1, -1):
-        sublist = lst[i - period: i]
+    for i in range(max_):
+        if i - period + 1 < 0:
+            continue
+        sublist = lst[i - period + 1: i + 1]
         sum_ = 0.0
         for j in sublist:
             sum_ += j['close']
