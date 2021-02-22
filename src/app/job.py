@@ -42,7 +42,7 @@ def is_consecutive(data):
     for i in range(len(data) - 1):
         current = data[i]
         next_ = data[i+1]
-        if (next_[0] - current[0]) < (60*60*24):
+        if (current[0] - next_[0]) < (60*60*24):
             return False
     return True
 
