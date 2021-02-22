@@ -38,15 +38,38 @@ def job():
         update_currency(currency)
 
 
+def is_consecutive(data):
+    for i in range(len(data) - 1):
+        current = data[i]
+        next_ = data[i+1]
+        if (next_[0] - current[0]) < (60*60*24):
+            return False
+    return True
+
 def verify_consistency():
-    # para cada moeda fazer um select dos ultimos 365 dias
-    # e verificar se entre cada 2 registro a diferenca de timestamp eh igual a 60*60*24
-    pass
+    now = datetime.datetime.now()
+    today = datetime.datetime(now.year, now.month, now.day)
+    yesterday = today - datetime.timedelta(1)
+
+    with sqlite3.connect(const.DATABASE_NAME) as connection:
+        cursor = connection.cursor()
+        for currency in [const.BITCOIN, const.ETHEREUM]:
+            cursor.execute(f'''
+                SELECT timestamp as ts
+                FROM coins WHERE pair = ?
+                ORDER BY ts
+                DESC LIMIT 365''', (currency,)
+            )
+            data = cursor.fetchall()
+
+            consecutive = is_consecutive(data)
+            if not consecutive:
+                print(f'Currency {currency} lost one value')
 
 
-# schedule.every().day.at("11:00").do(job)
-# schedule.every().day.at("12:10").do(verify_consistency)
-job()
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
+schedule.every().day.at("11:00").do(job)
+schedule.every().day.at("12:10").do(verify_consistency)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
