@@ -1,6 +1,4 @@
-import sqlite3
 import datetime
-import time
 
 from flask import Flask, jsonify, request
 from marshmallow import ValidationError
@@ -34,8 +32,8 @@ def get_avg(pair):
     cursor = database.get_db().cursor()
 
     cursor.execute(
-        f'''SELECT timestamp, mms_{data["range_"]} as mms
-            FROM coins where pair = ? and timestamp >= {data["from_"]} and timestamp <= {data["to"]}
+        f'''SELECT "timestamp", mms_{data["range_"]} as mms
+            FROM coins where pair = ? and "timestamp" >= {data["from_"]} and "timestamp" <= {data["to"]}
             ORDER BY timestamp ASC''',
         (data['pair'],)
     )
