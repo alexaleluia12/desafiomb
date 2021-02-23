@@ -1,5 +1,5 @@
 
-from app.helpers import movin_average, store_coin
+from app.helpers import movin_average
 
 
 def test_movin_average():
